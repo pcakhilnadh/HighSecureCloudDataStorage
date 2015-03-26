@@ -18,10 +18,10 @@ from cloud.models import UserProfile,TempStorage,FileDetails,FileShare,Permissio
 from Modules import Rearrange,Arrangement
 #---------------------------------------------------------------------------------------------------------------------------
 
-CLIENT_ID = '527872149361-0j63flf45cl368rrv3i6cn0tc97snkt7.apps.googleusercontent.com'
-CLIENT_SECRET = 'd53YUXp6jmzB5rPh82CZRAtq'
-OAUTH_SCOPE = 'https://www.googleapis.com/auth/drive'
-REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
+CLIENT_ID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+CLIENT_SECRET = 'xxxxxxxxxxxxxxxxxxxxxx'
+OAUTH_SCOPE = 'xxxxxxxxxxxxxxxxxxxxxxxxxxx'
+REDIRECT_URI = 'xxxxxxxxxxxxxxxxxxxxx'
 # Run through the OAuth flow and retrieve credentials
 flow = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)
 with open('google_acc.pkl', 'rb') as input:
