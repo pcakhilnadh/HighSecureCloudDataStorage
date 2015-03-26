@@ -1,0 +1,210 @@
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  
+</script>
+<script type="text/javascript">
+window.onload=function(){
+    
+        $("#itemUsers").hide();
+        $("#itemRows").hide();
+    
+    }
+$(document).ready(function(){
+    $("#hide").click(function(){
+        $("#itemUsers").hide();
+        $("#itemRows").hide();
+    });
+    $("#hide2").click(function(){
+        $("#itemUsers").hide();
+        $("#itemRows").hide();
+    });
+
+    $("#show").click(function(){
+        $("#itemUsers").show();
+        $("#itemRows").show();
+    });
+});
+</script>
+<script type="text/javascript">
+  
+
+var rowNum = 0;
+var c=1;
+var counter=0;
+function addUser() 
+{
+ counter++;
+
+ if (counter<2)
+{
+
+var row = '<input onclick="addRow(); " type="button" value="Add a User " class="btn btn-default" />'
+jQuery('#itemUsers').append(row);
+}
+}
+function addRow() {
+rowNum ++;
+
+var row = '<label  class=" control-label"><p  id="rowNum'+rowNum+'">Enter Username : </label><input  class="form-control form-group"  type="text" value="" name="'+c+'" required="required" /><input type="hidden" value=" '+c+'" name="count" /><input type="button" value="Remove This User " class="btn-sm btn-warning " onclick="removeRow('+rowNum+');"></p>';
+jQuery('#itemRows').append(row);
+c ++;
+}
+
+function removeRow(rnum) {
+jQuery('#rowNum'+rnum).remove();
+}
+</script>
+<body>
+<!-- Profile -->
+<div class="container target">
+      
+    <div class="row" style="overflow:scroll;height:400px;" >
+        <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+          <center>
+              <h1 class="">Dashboard</h1>
+            </center>
+        </div>
+      
+    </div>
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+
+                <a href="/dashboard/"><li class=" list-group-item" contenteditable="false"><strong>Home</strong></li></a>
+                <a href="/dashboard/share/"><li class="active list-group-item" contenteditable="false"><strong>File Share</strong></li></a>
+                                
+            </ul>
+        </div>    
+        <div class="verticalSpace">
+        <div class="col-md-8">
+        {% if success %}
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Hurrah!</strong> 
+             {{success}}
+        
+        {% endif %} 
+        {% if error  %}
+        
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Oopz!</strong> 
+            {{error}}
+        </div>
+           
+        </div>
+        {%else%}
+        
+        </div>
+        </div>
+        
+        
+              <DIV >
+              <h1>{{filename}}</h1>
+                 <form class="form-horizontal" role="form" action="/dashboard/share/" method="POST" enctype="multipart/form-data">
+                     {% csrf_token %}
+                            
+                <div class="col-sm-8">  
+                    <div class="form-group">
+                                      <div class="col-sm-5">
+                                        <label for="inputEmail3" class=" control-label">User Permissions</label>
+                                      </div>
+                                      <div>
+                                      <p>
+{%if fileshare.permission.count == 1%}
+   {% for user in fileshare.permission.all%}
+      {%if user.public == 1 %}
+                                  <input type="radio"  id="hide"  required="required" value='onlyme' name="permissioN"  >Only Me
+                                  <input type="radio"  id="hide2"  required="required" value='PUBLIC' name="permissioN" checked="checked">Public
+                                  <input type="radio"  id="show"  required="required" value='share' name="permissioN">Share with users
+
+      {%else%}
+                                  <input type="radio"  id="hide"  required="required" value='onlyme' name="permissioN" checked="checked" >Only Me
+                                  <input type="radio"  id="hide2"  required="required" value='PUBLIC' name="permissioN" >Public
+                                  <input type="radio"  id="show"  required="required" value='share' name="permissioN">Share with users
+
+      {%endif%}
+    {%endfor%}
+{%else%}
+                                  
+<div >
+       <input type="radio"  id="hide"  required="required" value='onlyme' name="permissioN"  >Only Me
+                                  <input type="radio"  id="hide2"  required="required" value='PUBLIC' name="permissioN" >Public
+                                  <input type="radio"  id="show"  required="required" value='share' name="permissioN" checked="checked">Share with users
+
+              <table class="table table-hover table-borded">
+              <thead>
+                  <tr>
+
+                    <th>username</th>
+                    
+                  </tr>
+              </thead>
+              <tbody>
+                    <tr>
+                    {%for u in userList%}
+
+                      <form action="/dashboard/share/" method="POST">
+                      <td>
+                        <input class="form-control"  id="disabledInput" type="text" value="{{u}}" disabled >
+                      </td>
+                      
+                      
+                      {% csrf_token %}
+                      <td><button type="submit" class="btn btn-danger" name="remove" value="1" >Remove Access</button></td>
+                      
+                      <input  type="hidden" name="user" value="{{u}}">
+                    </form>
+                    </tr>
+                       {%endfor%}
+                    
+                    
+              </tbody>
+            </table>
+
+     </div>
+{%endif%}
+    
+                                          <input  type="hidden" name="fileid" value="{{fileshare.file_requested}}">              
+                                          <button type="submit" class="btn btn-success" >Update Permission</button>
+                               </p>     
+                                  </div>
+                                    
+                                     <div class="col-sm-8 " id="itemUsers">
+                                              <input onclick="addRow(); " type="button" value="Add a User " class="btn btn-default" />                                        
+                                      </div>
+                                    
+                                      <div   id="itemRows">
+                                      </div>
+                                    
+                                    
+                </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+               
+                  </form>
+              </DIV>
+
+        </div>
+        
+     </div>
+</div>
+
+<!-- End -->
+{% endif %}
+</body>
+{% include 'footer.html' %}

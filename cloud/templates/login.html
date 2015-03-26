@@ -1,0 +1,52 @@
+{% include 'header.html' %}
+<body>
+
+<!-- LOGIN-->
+<div>
+	<div class="col-lg-offset-5">
+		<label  class="control-label"><h1>LOGIN </h1></label>
+	</div>
+	<div class="col-lg-5 col-sm-offset-3">
+	
+	<form class="form-horizontal" role="form" action="/ulogin/" method="POST">
+	{% csrf_token %}
+  		<div class="form-group">
+    		<label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+    		<div class="col-sm-10">
+      		<input type="text" class="form-control" id="inputEmail3" placeholder="Enter Username" required="required" name="username">
+    		</div>
+  		</div>
+  		<div class="form-group">
+    		<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+    			<div class="col-sm-10">
+      			<input type="password" class="form-control" id="inputPassword3" placeholder="Enter Password" required="required" name="pwd">
+    		</div>
+  		</div>
+  		<div class="form-group">
+    		<div class="col-sm-offset-2 col-sm-10">
+      			<button type="submit" class="btn btn-info">Sign in</button>
+    		</div>
+  		</div>
+	</form>
+	</div>
+</div>
+<!--end -->	
+
+<!-- Error Messasge -->
+<div > 
+	<div class="col-lg-offset-8 " >
+	              {% if error %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Oopz!</strong> 
+                    {{error}}
+                </div>           
+                {% endif %}
+            
+	</div>
+</div>
+<!-- end -->
+	<a href="/forgot_password/">Forgot Password ?</a>
+</body>
+</html>
+{% include 'footer.html' %}

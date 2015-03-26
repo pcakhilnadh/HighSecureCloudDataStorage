@@ -1,0 +1,130 @@
+
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  
+</script>
+
+<script>
+window.onload = function() {
+  getLocation()
+};
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } 
+}
+
+function showPosition(position) {
+    document.getElementById("lati").value = position.coords.latitude
+    document.getElementById("long").value = position.coords.longitude
+    
+    
+}
+</script>
+
+
+<body>
+<!-- Profile -->
+<div class="container target">
+      
+    <div class="row" style="overflow:scroll;height:600px;" >
+        <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+          <center>
+              <h1 class="">Mange Trusted Systems</h1>
+            </center>
+        </div>
+      
+        </div>
+        
+        {% if NotTrusted %}
+                <div class="alert alert-success">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a> 
+                 {% if error%}
+                 <strong>{{error}}</strong>
+                 {% endif %}
+                    <form action="/addSystem/" method="POST">
+                    {% csrf_token %}
+                      <div class="form-group">
+                                        
+                                        <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="inputEmail3" placeholder="Name Your New System" required="required" name="mac_name">
+                                        </div>
+                                        <div>
+                                        <input type="hidden" id="lati"  name="latitude">
+                                        <input type="hidden" id="long"  name="longitude">
+                                          <button  type="submit" class="btn btn-warning" >Add</button>
+                                        </div>
+                                    </div>
+                    </form>
+                   
+                </div>
+
+        {% endif %}
+
+                <div class="col-md-12">
+              <table class="table table-hover table-borded">
+              <thead>
+                  <tr>
+
+                    <th>Name</th>
+                    <th>Route</th>
+                    <th>Place</th>
+                    <th>Territory</th>
+                    <th>Provincial</th>
+                    <th>Country</th>
+                    <th>PIN</th>
+
+                    
+                    <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                    <tr>
+                        {% for name,route,place,territory,provincial,country,PIN,address in macdetails  %}
+
+                      <td style="width:300px">
+                        {{ name }}
+                      </td>
+                      <td>{{ route }}</td>
+                      <td>{{ place }}</td>
+                      <td>{{ territory }}</td>
+                      <td>{{ provincial }}</td>
+                      <td>{{ country }}</td>
+                      <td>{{ PIN }}</td>
+                      <form action="/addSystem/" method="POST">
+                      {% csrf_token %}
+
+                      <input type="hidden" name="macAddress" value="{{address}}">
+
+                      <td style="width:10px"><button type="submit" class="btn btn-danger" name="delete">Remove System </button></td>
+                      
+                    </form>
+                    </tr>
+                        {% endfor %}
+                    
+                    
+              </tbody>
+            </table>
+
+            </div>           
+             
+        
+  </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

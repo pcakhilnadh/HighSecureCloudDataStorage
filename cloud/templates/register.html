@@ -1,0 +1,178 @@
+{% include 'header.html' %}
+<script>
+
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  </script>
+  <script type="text/javascript">
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+  </script>
+<script>
+window.onload = function() {
+  getLocation()
+};
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } 
+}
+
+function showPosition(position) {
+    document.getElementById("lati").value = position.coords.latitude
+    document.getElementById("long").value = position.coords.longitude
+    
+    
+}
+</script>
+
+  </head>
+<body>
+ 
+ 
+<script type="text/javascript">
+    $("#input-id").fileinput();
+    $("#input-id").fileinput({"showUpload":false, 'previewFileType':'any'});
+</script>
+
+<body>
+<!-- Profile -->
+<div class="container target">
+    <div class="row profile_bg">
+        <div>
+        
+            <center>
+                <h1 class="">New User Registration</h1>
+            </center>
+        </div>
+        
+    </div>
+  
+    <div class="row">
+        <div class="panel panel-default">
+            {% if registered %}
+            <div class="panel-heading">
+                <strong>You are Registered ! </strong>
+                <a href="/ulogin">Click here to Login.</a><br />
+            </div>
+            {% else %} 
+            <div class="panel-heading">Fill up the Form
+                {% if error %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Oopz!</strong> 
+                    {{error}}
+                </div>           
+                {% endif %}
+            </div>
+            <div class="panel-body"> 
+                <div class="container">
+                    <form class="form-horizontal" role="form" action="/register/" method="POST" enctype="multipart/form-data">
+                     {% csrf_token %}
+
+                         <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Username</label>
+                                        <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="inputEmail3" placeholder="Enter Username" required="required" name="username">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+                                            <div class="col-sm-7">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Enter Password" required="required" name="password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-3 control-label">Confirm Password</label>
+                                            <div class="col-sm-7">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Re-Enter Password" required="required" name="cpassword">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+                                        <div class="col-sm-7">
+                                        <input type="email" class="form-control" id="inputEmail3" placeholder="Enter Email" required="required" name="email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">First Name</label>
+                                        <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="inputEmail3" placeholder="Enter First Name" required="required" name="first_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Last Name</label>
+                                        <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="inputEmail3" placeholder="Enter Last Name" required="required" name="last_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Sex</label>
+                                        
+                                        <div class="col-sm-7 " >
+                                                        <input type="radio"  id="optionsRadios2"  required="required" value='Male' name="gender">Male
+                                                        <input type="radio"  id="optionsRadios2"  required="required" value='Female' name="gender">Female
+                                                      
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Date Of Birth</label>
+                                        <div class="col-sm-7">
+                                        <input type="text" id="datepicker" class="selector" name="dob" placeholder="click here to select DOB">
+                                        </div>
+                            </div>
+                                    
+                         </div>
+                         <div class="col-md-6">
+                            <div class="form-group" data-toggle="tooltip" data-placement="top" title="Mark it if you really TRUST this system">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">System Info</label>
+                                        <div class="col-sm-7 "  >
+                                                        <input type="checkbox"  id="optionsRadios2" value="Y" name="trustedsystem"  > Is this your trusted System ?
+                                                      
+                                        </div>
+                            </div>
+                            <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Mobile Number</label>
+                                        <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="inputEmail3" placeholder="Enter Mobile Number" required="required" name="phone_number" pattern="[0-9]{10}">
+                                        </div>
+                            </div>
+                            <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Profile Image</label>
+                                        <div class="col-sm-7">
+                                        <input id="input-id" type="file" class="file" data-preview-file-type="text" name="picture" >
+                                        </div>
+                                        
+                            </div>
+                            <input type="hidden" id="lati"  name="latitude">
+                            <input type="hidden" id="long"  name="longitude">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-warning" >Sign Up... !!</button>
+                                </div>
+                            </div>
+                         </div>
+                     </form>
+                </div>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

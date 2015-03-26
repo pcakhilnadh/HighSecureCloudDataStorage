@@ -1,0 +1,98 @@
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  
+</script>
+<body>
+<!-- Profile -->
+<div class="container target">
+      
+    <div class="row" style="overflow:scroll;height:600px;" >
+        <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+          <center>
+              <h1 class="">Dashboard</h1>
+            </center>
+        </div>
+      
+    </div>
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+
+                <a href="/dashboard/"><li class=" list-group-item" contenteditable="false"><strong>Home</strong></li></a>
+                <a href="/dashboard/search/"><li class="active list-group-item" contenteditable="false"><strong>File Search</strong></li></a>
+                <a href="/dashboard/upload/"><li class=" list-group-item" contenteditable="false"><strong>File Upload</strong></li></a>
+                <a href="/dashboard/incoming/"><li class=" list-group-item" contenteditable="false"><strong>Incoming Files </strong></li></a>
+                                
+            </ul>
+        </div>    
+        <div class="verticalSpace">
+        <div class="col-sm-8">  
+             <form role="form" action="/dashboard/search/" method="POST">
+                {% csrf_token %}
+                <div class="col-sm-8 col-sm-offset-2">  
+                  <div class="input-group">
+                      <input type="text" class="form-control text-center"placeholder="Enter the Filename 'n'  Search" name="search" />
+                      <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-search"></span>
+                      </span>
+                  </div>
+                  <div class="col-sm-offset-5">
+                    <button class="btn btn-primary">Search</button>
+                  </div>
+                </div>
+              </form> 
+        </div>
+        <div class="col-md-8">
+              <table class="table table-hover table-borded">
+              <thead>
+                  <tr>
+
+                    <th>Filename</th>
+                    <th>Size</th>
+                    <th>Ownership</th>
+                    <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                    <tr>
+                        {% for filename,size,id,owner in filedetails  %}
+
+                      <td>
+                        {{ filename }}
+                      </td>
+                      <td>{{ size }}MB</td>
+                      <td>{{owner}}</td>
+                      <form action="/dashboard/viewFile/" method="POST">
+                      {% csrf_token %}
+                      <td><button type="submit" class="btn btn-warning" >View Details</button></td>
+                      <input  type="hidden" name="fileid" value="{{id}}">
+                    </form>
+                    </tr>
+                        {% endfor %}
+                    
+                    
+              </tbody>
+            </table>
+
+            </div>
+
+
+        </div>
+        
+	   </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

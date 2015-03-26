@@ -1,0 +1,157 @@
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  
+</script>
+<script>
+$(document).ready(function(){
+    $("#hide").click(function(){
+        $("#itemUsers").hide();
+        $("#itemRows").hide();
+    });
+    $("#hide2").click(function(){
+        $("#itemUsers").hide();
+        $("#itemRows").hide();
+    });
+    $("#show").click(function(){
+        $("#itemUsers").show();
+        $("#itemRows").show();
+    });
+});
+</script>
+<script type="text/javascript">
+  
+
+var rowNum = 0;
+var c=1;
+var counter=0;
+function addUser() 
+{
+ counter++;
+
+ if (counter<2)
+{
+
+var row = '<input onclick="addRow(); " type="button" value="Add a User " class="btn btn-default" />'
+jQuery('#itemUsers').append(row);
+}
+}
+function addRow() {
+rowNum ++;
+
+var row = '<label  class=" control-label"><p  id="rowNum'+rowNum+'">Enter Username : </label><input  class="form-control form-group"  type="text" value="" name="'+c+'" required="required" /><input type="hidden" value=" '+c+'" name="count" /><input type="button" value="Remove This User " class="btn-sm btn-warning " onclick="removeRow('+rowNum+');"></p>';
+jQuery('#itemRows').append(row);
+c ++;
+}
+
+function removeRow(rnum) {
+jQuery('#rowNum'+rnum).remove();
+}
+</script>
+<body>
+<!-- Profile -->
+<div class="container target">
+      
+    <div class="row" style="overflow:scroll;height:400px;" >
+        <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+          <center>
+              <h1 class="">Dashboard</h1>
+            </center>
+        </div>
+      
+    </div>
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+
+                <a href="/dashboard/"><li class=" list-group-item" contenteditable="false"><strong>Home</strong></li></a>
+                <a href="/dashboard/search/"><li class=" list-group-item" contenteditable="false"><strong>File Search</strong></li></a>
+                <a href="/dashboard/upload/"><li class="active list-group-item" contenteditable="false"><strong>File Upload</strong></li></a>
+                <a href="/dashboard/incoming/"><li class=" list-group-item" contenteditable="false"><strong>Incoming Files </strong></li></a>
+                                
+            </ul>
+        </div>    
+        <div class="verticalSpace">
+        <div class="col-md-8">
+        {% if error  %}
+        
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Oopz!</strong> 
+            {{error}}
+        </div>
+           
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Hurrah!</strong> 
+             {{success}}
+        </div>
+        </div>
+        
+        {% endif %} 
+              <DIV >
+                 <form class="form-horizontal" role="form" action="/dashboard/upload/" method="POST" enctype="multipart/form-data">
+                     {% csrf_token %}
+                            <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Selet your file</label>
+                                        <div class="col-sm-7">
+                                        <input id="input-id" type="file" class="file" data-preview-file-type="text" name="file" required="required">
+                                        </div>
+                                        
+                            </div>
+                <div class="col-sm-8">  
+                    <div class="form-group">
+                                      <div class="col-sm-5">
+                                        <label for="inputEmail3" class=" control-label">User Permissions</label>
+                                      </div>
+                                      <div>
+                                                 <input type="radio"  id="hide"  required="required" value='onlyme' name="permission">Only Me
+                                                          <input type="radio"  id="hide"  required="required" value='public' name="permission" value="public">Public
+                                                                   <input onclick="addUser()" type="radio"  id="show"  required="required" value='share' name="permission">Share with users
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="col-sm-offset-2 col-sm-10">
+                                          <button type="submit" class="btn btn-success" >Upload File</button>
+                                      </div>
+                                  </div>
+                                    
+                                  <div class="col-sm-8 " id="itemUsers">
+                                        
+                                      </div>
+                                    
+                                      <div   id="itemRows">
+                                      </div>
+                                    
+                                    
+                </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+               
+                  </form>
+                </DIV>
+
+        </div>
+        
+	   </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

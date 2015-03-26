@@ -1,0 +1,106 @@
+
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  
+</script>
+
+<body>
+<!-- Profile -->
+<div class="container target">
+      
+    <div class="row" style="overflow:scroll;height:600px;" >
+        <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+          <center>
+              <h1 class="">Dashboard</h1>
+            </center>
+        </div>
+      
+        </div>
+              {% if NotTrusted %}        
+                <div class="alert alert-info">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>This system is not trusted !</strong> 
+                      <div class="form-group">
+                                        
+                                        <div class="col-sm-5">
+                                          <a href="/addSystem/">Add this System as Trusted</a>
+                                        </div>
+                                    </div>
+                   
+                </div>
+                {% endif %}           
+             
+        <div class="col-sm-3">
+             <!--left col-->
+            <ul class="list-group">
+
+                <a href="/dashboard/"><li class="active list-group-item" contenteditable="false"><strong>Home</strong></li></a>
+                <a href="/dashboard/search/"><li class=" list-group-item" contenteditable="false"><strong>File Search</strong></li></a>
+                <a href="/dashboard/upload/"><li class=" list-group-item" contenteditable="false"><strong>File Upload</strong></li></a>
+                <a href="/dashboard/incoming/"><li class=" list-group-item" contenteditable="false"><strong>Incoming Files </strong></li></a>
+                                
+            </ul>
+        </div>    
+        <div class="verticalSpace">
+          <div>
+            <div class="col-sm-5">
+                 <center><strong>You Have used {{quota}} MB of your Disk Space</strong></center>
+            </div>
+            <div class="col-sm-3">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: {{quota}}%; color:black;">
+                      {{quota}}/100MB
+                    </div>
+                  </div>
+            </div>
+            </div>
+            <div class="col-md-8">
+              <table class="table table-hover table-borded">
+              <thead>
+                  <tr>
+
+                    <th>Filename</th>
+                    <th>Size</th>
+                    
+                    <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                    <tr>
+                        {% for filename,size,id in filedetails  %}
+
+                      <td>
+                        {{ filename }}
+                      </td>
+                      <td>{{ size }}MB</td>
+                      <form action="/dashboard/viewFile/" method="POST">
+                      {% csrf_token %}
+                      <td><button type="submit" class="btn btn-warning" >View Details</button></td>
+                      <input  type="hidden" name="fileid" value="{{id}}">
+                    </form>
+                    </tr>
+                        {% endfor %}
+                    
+                    
+              </tbody>
+            </table>
+
+            </div>
+        </div>
+  </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

@@ -1,0 +1,242 @@
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050",
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+  
+</script>
+
+
+<body>
+<!-- Profile -->
+<div class="container target">
+    <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+        	<center>
+             	<h1 class="">Settings</h1>
+
+            </center>
+        </div>
+
+        <div class="col-sm-2"><img title="profile image" class="img-circle img-responsive" src="{{ profiles.picture }}"></div>
+    </div>
+  
+    <div class="row" style="overflow:scroll;height:400px;" >
+      {% if success %}
+                <div class="alert alert-success">
+                    <strong>Hurrah!</strong> 
+                    {{success}} 
+                <br> <b><a href="/settings/">Click Here to go back</a></b>
+                </div>           
+                {% else  %}
+          
+      <div class="panel panel-default">
+            <div class="panel-heading">Change Your Account Details Under Following Tabs</div>
+             
+             {% if error %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Oopz!</strong> 
+                    {{error}}
+                </div>           
+                {% endif %}
+                
+           
+      </div>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseOne">
+              <h4 class="panel-title">
+                <a href="#">Update Profile Informations</a>
+              </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <form class="form-horizontal" role="form" action="/settings/" method="POST">
+                {% csrf_token %}
+                  <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-3 control-label">First Name</label>
+                      <div class="col-sm-7">
+                      <input type="text" class="form-control" id="inputEmail3" placeholder="Enter First Name" required="required" name="first_name" value="{{user.first_name}}">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-3 control-label">Last Name</label>
+                      <div class="col-sm-7">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="Enter Last Name" required="required" name="last_name" value="{{user.last_name}}">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-3 control-label">Sex</label>
+                             
+                        <div class="col-sm-7 " >
+                              {% if profiles.gender = "Male" %}
+
+                              <input type="radio"  id="optionsRadios2"  required="required" value='Male' name="gender" checked="true">Male
+                              <input type="radio"  id="optionsRadios2"  required="required" value='Female' name="gender" >Female
+                              {% else %}
+                              <input type="radio"  id="optionsRadios2"  required="required" value='Male' name="gender" >Male
+                              <input type="radio"  id="optionsRadios2"  required="required" value='Female' name="gender" checked="true">Female
+                              
+                              {% endif %}                                                     
+                        </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-3 control-label">Date Of Birth</label>
+                        <div class="col-sm-7">
+                              <input type="text" id="datepicker" class="selector" name="dob" placeholder="click here to select DOB" value="{{ profiles.dob|date:'Y-m-d' }}">
+                        </div>
+                  </div>
+                  <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Mobile Number</label>
+                                        <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="inputEmail3" placeholder="Enter Mobile Number" required="required" name="phone_number" pattern="[0-9]{10}" value="{{profiles.phone_number}}">
+                                        </div>
+                  </div>
+                  <div class="form-group">
+                        <label  class="col-sm-3 control-label"></label>
+                          <div class="col-sm-5">
+                            <button type="submit" class="btn btn-warning" name="confirmProfile">Confirm Profile Changes</button>
+                          </div>
+                  </div>                  
+                </form>
+              </div>
+              </div>
+            
+          </div>
+        </div>
+
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              <h4 class="panel-title">
+                <a href="#">Change Password</a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <form class="form-horizontal" role="form" action="/settings/" method="POST">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label">Curent Password</label>
+                    <div class="col-sm-5">
+                      <input type="password" class="form-control"  placeholder="Enter Current Password" required="required" name="currentPwd">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label">New Password</label>
+                    <div class="col-sm-5">
+                      <input type="password" class="form-control"  placeholder="Enter New Password" required="required" name="newPwd">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label">Re-Enter New Password</label>
+                    <div class="col-sm-5">
+                      <input type="password" class="form-control"  placeholder="Re-Enter New Password" required="required" name="reNewPwd">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                  <label  class="col-sm-3 control-label"></label>
+                    <div class="col-sm-5">
+                      <button type="submit" class="btn btn-warning">Confirm Change Password</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseOne">
+              <h4 class="panel-title">
+                <a href="#">Change Email</a>
+              </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <form class="form-horizontal" role="form" action="/settings/" method="POST">
+                {% csrf_token %}  
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label">Curent Email ID</label>
+                    <div class="col-sm-5">
+                      <input type="email" class="form-control"  placeholder="Enter Current Email" required="required" name="currentEmail">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label">New Email ID</label>
+                    <div class="col-sm-5">
+                      <input type="email" class="form-control"  placeholder="Enter New Email ID" required="required" name="newEmail">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label">Re-Enter New Email</label>
+                    <div class="col-sm-5">
+                      <input type="email" class="form-control"  placeholder="Re-Enter New Email" required="required" name="reNewEmail">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                  <label  class="col-sm-3 control-label"></label>
+                    <div class="col-sm-5">
+                      <button type="submit" class="btn btn-warning">Confirm Change Email</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseOne">
+              <h4 class="panel-title">
+                <a href="#">Change Profile Picture</a>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                <form class="form-horizontal" role="form" action="/settings/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}  
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label">Profile Image</label>
+                    <div class="col-sm-7">
+                    <input id="input-id" type="file" class="file" data-preview-file-type="text" name="picture" >
+                    </div>
+                                
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <a href="/addSystem/">
+              <h4 class="panel-title">
+                Manage Trusted Systems
+              </h4>
+            
+          </a>            
+          </div>
+        </div>
+{% endif %}
+        
+        
+	   </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

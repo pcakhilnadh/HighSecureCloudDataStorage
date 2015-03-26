@@ -1,0 +1,125 @@
+
+{% include 'header.html' %}
+<script type="text/javascript">
+  $(function() {
+
+    $( "#datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2050"
+    });
+  });
+  
+</script>
+<body>
+<!-- Profile -->
+<div class="container target">
+      
+    <div class="row" style="overflow:scroll;height:600px;" >
+        <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+          <center>
+              <h1 class="">Dashboard</h1>
+            </center>
+        </div>
+      
+        </div>
+        <div class="col-sm-3">
+             <!--left col-->
+            <ul class="list-group">
+
+                <a href="/dashboard/"><li class=" list-group-item" contenteditable="false"><strong>Home</strong></li></a>
+                <a href="/dashboard/viewFile/"><li class="active list-group-item" contenteditable="false"><strong>File Details</strong></li></a>                                
+            </ul>
+        </div>    
+        <div class="verticalSpace">
+            {% if error %}
+            <div class="col-md-7">
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Oopz!</strong> 
+                    {{error}}
+                </div>           
+             
+            </div> 
+                {% else %}
+            <DIV>
+              <div class="col-md-5">
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">File Name :</label>
+                      <div class="">
+                        <p class="form-control-static">{{filename}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">File Size :</label>
+                      <div class="">
+                        <p class="form-control-static">{{ filesize}}MB</p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">File Owner :</label>
+                      <div class="">
+                        <p class="form-control-static">{{fileshare.owner}}</p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">File Access Permissions :</label>
+
+                    {% for permission in fileshare.permission.all %}
+                                 
+
+                        <div class="">
+                        <p class="form-control-static">
+                        {% if permission.public == 1 %}
+                        
+                        PUBLIC
+                        {%else%}
+                        {{permission}}</p>
+                        {%endif%}
+                      </div>
+                    {% endfor %}
+                    </div>
+                    
+                  </form>
+              </div>
+              <div class="col-md-4">
+                <form action="/download/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                      <div class="">
+                        <input  type="hidden" name="fileid" value="{{fileshare.file_requested}}">
+                        <button type="submit" class="btn btn-warning" name="download">Download File </button>
+
+                      </div>
+                    
+                </div>
+                </form>
+                <form action="/dashboard/share/" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                      <div class="">
+                       
+                       {% ifequal fileshare.owner|stringformat:"s"  user|stringformat:"s" %}
+                       <input  type="hidden" name="fileid" value="{{fileshare.file_requested}}">
+                        <button type="submit" class="btn btn-danger" name="share">Manage File Sharing </button>
+                        {%endifequal %}
+                        
+                      </div>
+                    
+                </div>
+                </form>                
+              </div>
+            </DIV>
+        </div>
+        {% endif %}
+  </div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}

@@ -1,0 +1,41 @@
+{% include 'header.html' %}
+<body>
+<!-- Profile -->
+<div class="container target">
+    <div class="row profile_bg">
+        <div class="col-sm-10">
+        <br><br>
+        	<center>
+             	<h1 class="">{{ user.first_name }} {{ user.last_name }}</h1>
+            </center>
+        </div>
+      	<div class="col-sm-2"><img title="profile image" class="img-circle img-responsive" src="{{ profiles.picture }}"></div>
+
+    </div>
+  
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">First Name</strong></span>{{user.first_name}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Last Name</strong></span> {{user.last_name}}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Username</strong></span> {{user.username}}</li>
+              	<li class="list-group-item text-right"><span class="pull-left"><strong class="">Email </strong></span> {{user.email}}</li>
+              	<li class="list-group-item text-right"><span class="pull-left"><strong class="">Sex </strong></span> {{ profiles.gender }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">DOB </strong></span> {{ profiles.dob }}</li>
+              	<li class="list-group-item text-right"><span class="pull-left"><strong class="">Mobile No </strong></span>{{ profiles.phone_number }} </li>
+              	<li class="list-group-item text-right"><a href="/settings"><span class="pull-left"><strong class=""></strong></span>Account Settings</a></li>
+            </ul>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">{{profiles.user}}'s Bio</div>
+            <div class="panel-body"> A long description about me.</div>
+		</div>
+	</div>
+</div>
+
+<!-- End -->
+
+</body>
+{% include 'footer.html' %}
